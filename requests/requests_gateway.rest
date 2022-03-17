@@ -1,0 +1,21 @@
+GET http://localhost:3001/api/gateways/
+###
+POST http://localhost:3001/api/gateways/ HTTP/1.1
+content-type: application/json
+
+{
+    "serial": "SSS0001",
+    "name": "TPLINK MASTER L2",
+    "ip_v4": "192.165.25.66"
+}
+###
+PUT http://localhost:3001/api/gateways/623392067a3232f4cca8a96e HTTP/1.1
+content-type: application/json
+
+{
+    "serial": "SSS0072",
+    "name": "TPLINK MASTER L9",
+    "ip_v4": "192.168.22.9"
+}
+###
+DELETE  http://localhost:3001/api/gateways/623392067a3232f4cca8a96e HTTP/1.1
