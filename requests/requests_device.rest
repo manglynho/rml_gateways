@@ -4,10 +4,10 @@ POST http://localhost:3001/api/devices/ HTTP/1.1
 content-type: application/json
 
 {
-    "uid": "09122132123",
+    "uid": "09122132189",
     "vendor": "TP Link",
     "status": true,
-    "gateway_id": "623392897a3232f4cca8a975"
+    "gateway": "623392897a3232f4cca8a975"
 }
 ###
 PUT http://localhost:3001/api/devices/623394b128342a590cb973cc HTTP/1.1

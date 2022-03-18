@@ -1,90 +1,198 @@
-const Blog = require('../models/blog')
-const User = require('../models/user')
-const jwt = require('jsonwebtoken')
+const Gateway = require('../models/gateway')
+const Device = require('../models/device')
 
-const initialBlogs = [ {
+const initialGateways = [ {
   _id: '5a422a851b54a676234d17f7',
-  title: 'React patterns',
-  author: 'Michael Chan',
-  url: 'https://reactpatterns.com/',
-  likes: 7,
+  serial: 'HHHPPP0001',
+  name: 'North Star',
+  ip_v4: '192.168.22.1',
   __v: 0
 },
 {
   _id: '5a422aa71b54a676234d17f8',
-  title: 'Go To Statement Considered Harmful',
-  author: 'Edsger W. Dijkstra',
-  url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-  likes: 5,
+  serial: 'HHHPPP0002',
+  name: 'South Star',
+  ip_v4: '192.168.22.2',
+  devices:[
+    '6233963428342a590cb973e4',
+    '6233963428342a590cb973e1',
+    '6233963428342a590cb973e2',
+    '6233963428342a590cb973e3',
+    '6233963428342a590cb973e5',
+    '6233963428342a590cb973e6',
+    '6233963428342a590cb973e7',
+    '6233963428342a590cb973e8',
+    '6233963428342a590cb973e9',
+    '6233963428342a590cb973f1',
+  ],
   __v: 0
 },
 {
   _id: '5a422b3a1b54a676234d17f9',
-  title: 'Canonical string reduction',
-  author: 'Edsger W. Dijkstra',
-  url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
-  likes: 12,
-  __v: 0
-},
-{
-  _id: '5a422b891b54a676234d17fa',
-  title: 'First class tests',
-  author: 'Robert C. Martin',
-  url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
-  likes: 10,
-  __v: 0
-},
-{
-  _id: '5a422ba71b54a676234d17fb',
-  title: 'TDD harms architecture',
-  author: 'Robert C. Martin',
-  url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
-  likes: 1,
-  __v: 0
-},
-{
-  _id: '5a422bc61b54a676234d17fc',
-  title: 'Type wars',
-  author: 'Robert C. Martin',
-  url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
-  likes: 2,
+  serial: 'HHHPPP0003',
+  name: 'West Star',
+  ip_v4: '192.168.22.3',
+  devices:['6233963428342a590cb973f2','6233963428342a590cb973f3','6233963428342a590cb973f4'],
   __v: 0
 }
 ]
 
-const nonExistingId = async () => {
-  const blog = new Blog({
-    title: 'some title',
-    author: 'some author',
-    url: 'some_url',
-    likes: 7,
+const initialDevices = [ {
+  _id: '6233963428342a590cb973e4',
+  uid: '90909010',
+  vendor: 'TP_Link1',
+  date: new Date(),
+  status: true,
+  gateway: '5a422aa71b54a676234d17f8',
+  __v: 0
+},
+{
+  _id: '6233963428342a590cb973e1',
+  uid: '90909020',
+  vendor: 'TP_Link2',
+  date: new Date(),
+  status: true,
+  gateway: '5a422aa71b54a676234d17f8',
+  __v: 0
+},
+{
+  _id: '6233963428342a590cb973e2',
+  uid: '90909030',
+  vendor: 'TP_Link3',
+  date: new Date(),
+  status: true,
+  gateway: '5a422aa71b54a676234d17f8',
+  __v: 0
+},
+{
+  _id: '6233963428342a590cb973e3',
+  uid: '90909040',
+  vendor: 'TP_Link4',
+  date: new Date(),
+  status: true,
+  gateway: '5a422aa71b54a676234d17f8',
+  __v: 0
+},
+{
+  _id: '6233963428342a590cb973e5',
+  uid: '90909050',
+  vendor: 'TP_Link5',
+  date: new Date(),
+  status: true,
+  gateway: '5a422aa71b54a676234d17f8',
+  __v: 0
+},
+{
+  _id: '6233963428342a590cb973e6',
+  uid: '90909060',
+  vendor: 'TP_Link6',
+  date: new Date(),
+  status: true,
+  gateway: '5a422aa71b54a676234d17f8',
+  __v: 0
+},
+{
+  _id: '6233963428342a590cb973e7',
+  uid: '90909070',
+  vendor: 'TP_Link7',
+  date: new Date(),
+  status: true,
+  gateway: '5a422aa71b54a676234d17f8',
+  __v: 0
+},
+{
+  _id: '6233963428342a590cb973e8',
+  uid: '90909080',
+  vendor: 'TP_Link8',
+  date: new Date(),
+  status: true,
+  gateway: '5a422aa71b54a676234d17f8',
+  __v: 0
+},
+{
+  _id: '6233963428342a590cb973e9',
+  uid: '90909090',
+  vendor: 'TP_Link9',
+  date: new Date(),
+  status: true,
+  gateway: '5a422aa71b54a676234d17f8',
+  __v: 0
+},
+{
+  _id: '6233963428342a590cb973f1',
+  uid: '90909000',
+  vendor: 'TP_Link10',
+  date: new Date(),
+  status: true,
+  gateway: '5a422aa71b54a676234d17f8',
+  __v: 0
+},
+{
+  _id: '6233963428342a590cb973f2',
+  uid: '90908000',
+  vendor: 'Huawei1',
+  date: new Date(),
+  status: true,
+  gateway: '5a422b3a1b54a676234d17f9',
+  __v: 0
+},
+{
+  _id: '6233963428342a590cb973f3',
+  uid: '90908001',
+  vendor: 'Huawei2',
+  status: true,
+  gateway: '5a422b3a1b54a676234d17f9',
+  __v: 0
+},
+{
+  _id: '6233963428342a590cb973f4',
+  uid: '90908002',
+  vendor: 'Huawei3',
+  date: new Date(),
+  status: true,
+  gateway: '5a422b3a1b54a676234d17f9',
+  __v: 0
+}
+]
+
+const nonExistingGatewayId = async () => {
+  const gateway = new Gateway({
+    serial: 'HHHPPP9999',
+    name: 'Some Gateway',
+    ip_v4: '192.168.22.99'
   })
-  await blog.save()
-  await blog.remove()
+  await gateway.save()
+  await gateway.remove()
 
-  return blog._id.toString()
+  return gateway._id.toString()
 }
 
-const blogsInDb = async () => {
-  const blogs = await Blog.find({})
-  return blogs.map(blog => blog.toJSON())
+const gatewaysInDb = async () => {
+  const gateways = await Gateway.find({})
+  return gateways.map(gateway => gateway.toJSON())
 }
 
-const usersInDb = async () => {
-  const users = await User.find({})
-  return users.map(user => user.toJSON())
+const nonExistingDeviceId = async () => {
+  const device = new Device({
+    uid: '90909099',
+    vendor: 'Some Vendor',
+    date: new Date(),
+    status: true,
+    gateway: '5a422a851b54a676234d17f7',
+  })
+  await device.save()
+  await device.remove()
+
+  return device._id.toString()
 }
 
-const getToken = async () => {
-  const usersAtStart = await usersInDb()
-  const userToToken = usersAtStart[0]
-  const userForToken = {
-    username: userToToken.username,
-    id: userToToken.id,
-  }
-  return jwt.sign(userForToken, process.env.SECRET)
+const devicesInDb = async () => {
+  const devices = await Device.find({})
+  return devices.map(device => device.toJSON())
 }
+
+
 
 module.exports = {
-  initialBlogs, nonExistingId, blogsInDb, usersInDb, getToken
+  initialGateways, initialDevices, nonExistingGatewayId, nonExistingDeviceId, gatewaysInDb, devicesInDb
 }

@@ -9,14 +9,19 @@ devicesRouter.get('/', async (request, response) => {
 
 devicesRouter.post('/', async (request, response) => {
   const body = request.body
-  if (!body.gateway_id) {
-    return response.status(401).json({ error: 'Gateway not selected' })
+
+  if (!body.gateway) {
+    return response.status(400).json({ error: 'Gateway not selected' })
   }
-  const gateway = await Gateway.findById(body.gateway_id)
+
+  const gateway = await Gateway.findById(body.gateway)
   if(!gateway){
-    return response.status(401).json({ error: 'Gateway not exist or invalid' })
+    return response.status(400).json({ error: 'Gateway not exist or invalid' })
   }
-  //no more that 10 peripheral devices are allowed for a gateway
+
+  if( gateway.devices.length >= 10){
+    return response.status(400).json({ error: 'No more that 10 peripheral devices are allowed for a gateway' })
+  }
 
   const device = new Device({
     uid: body.uid,

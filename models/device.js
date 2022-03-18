@@ -5,8 +5,7 @@ const deviceSchema = new mongoose.Schema({
   uid: { type: Number, minlength: 3, required: true, unique: true },
   vendor:  { type: String, minlength: 3, required: true },
   date: {
-    type: Date,
-    required: true,
+    type: Date
   },
   status: Boolean,
   gateway: {

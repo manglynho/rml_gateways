@@ -10,15 +10,13 @@ gatewaysRouter.get('/', async (request, response) => {
 gatewaysRouter.post('/', async (request, response) => {
   const body = request.body
   if(!net.isIPv4(body.ip_v4)){
-    return response.status(401).json({ error: 'IP missing or invalid' })
+    return response.status(400).json({ error: 'IP missing or invalid' })
   }
-
   const gateway = new Gateway({
     serial: body.serial,
     name: body.name,
     ip_v4: body.ip_v4,
   })
-  console.log(gateway)
   const savedGateway = await gateway.save()
   response.json(savedGateway)
 })
