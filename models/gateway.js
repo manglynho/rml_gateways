@@ -2,7 +2,12 @@ const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 
 const gatewaySchema = new mongoose.Schema({
-  serial: { type: String, minlength: 3, required: true, unique: true },
+  serial: {
+    type: String,
+    minlength: [3, 'Serial must have more than 3 chars length'],
+    required: [true, 'Serial required'],
+    unique: [true, 'Serial must be unique']
+  },
   name:  { type: String, minlength: 3, required: true },
   ip_v4: { type: String, required: true },
   devices: [
@@ -12,7 +17,6 @@ const gatewaySchema = new mongoose.Schema({
     }
   ],
 })
-
 
 gatewaySchema.set('toJSON', {
   transform: (document, returnedObject) => {
