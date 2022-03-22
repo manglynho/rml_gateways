@@ -1,5 +1,6 @@
 const gatewaysRouter = require('express').Router()
 const Gateway = require('../models/gateway')
+const Device = require('../models/device')
 const net = require('net')
 
 gatewaysRouter.get('/', async (request, response) => {
@@ -31,9 +32,20 @@ gatewaysRouter.get('/:id', async (request, response) => {
 
 })
 
-gatewaysRouter.delete('/:id', async (request, response) => {
-  await Gateway.findByIdAndRemove(request.params.id)
-  response.status(204).end()
+gatewaysRouter.delete('/:id', async (request, response, next) => {
+  Gateway.findById(request.params.id, function(err, gateway){
+    Device.deleteMany({
+      '_id': {
+        $in: gateway.devices
+      }
+    }, function(err){
+      if(err) return next(err)
+      gateway.deleteOne()
+      response.status(204).end()
+    })
+  })
+  /*await Gateway.findByIdAndRemove(request.params.id)
+  response.status(204).end()*/
 })
 
 gatewaysRouter.put('/:id', async (request, response) => {

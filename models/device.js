@@ -14,6 +14,7 @@ const deviceSchema = new mongoose.Schema({
   }
 })
 
+
 deviceSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
