@@ -26,11 +26,11 @@ I wrote two requests files (./requests/ ) that can be used to test the api.
 You can run those using VsCode or copy the info to Postman.
 
 ### 4. Tests
-Test suites are stored in the test folder and contain jest tests and data for main requirements and validation.
+Test suites are stored in the tests folder and contain jest tests and data for main requirements and validation.
 
 Also there are a test for the GatewayForm component in frontend app.
 
-Trigger test with command:
+Trigger tests with command:
 >npm run test
 
 Frontend has a test suite implemented with Cypress that you can start with the command: 
